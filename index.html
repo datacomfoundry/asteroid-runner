@@ -1,0 +1,257 @@
+<html>
+  <head>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var rocketship = document.createElement('img');
+        rocketship.src =
+          'https://i1.sndcdn.com/artworks-j8xjG7zc1wmTeO7b-O6l83w-t500x500.jpg';
+        document.body.appendChild(rocketship);
+
+        rocketship.style.width = '100px';
+        rocketship.style.height = '100px';
+
+        rocketship.style.borderRadius = '50%';
+
+        rocketship.style.position = 'absolute';
+        rocketship.style.left = '0px';
+        rocketship.style.top = '50%';
+        rocketship.style.marginTop = '-50px';
+
+        var x = 0;
+        var xDirection = 1;
+        var xSpeed = 10;
+        function animate() {
+          x += xDirection * xSpeed;
+          if (x > window.innerWidth - 100) {
+            xDirection = -1;
+          } else if (x < 0) {
+            xDirection = 1;
+          }
+          rocketship.style.left = x + 'px';
+          window.requestAnimationFrame(animate);
+        }
+        animate();
+
+        xSpeed = 5;
+
+        document.body.style.overflow = 'hidden';
+
+        document.body.style.backgroundColor = 'black';
+
+        rocketship.onclick = function () {
+          var text = document.createElement('div');
+          text.innerHTML = 'Firing thrusters!';
+          text.style.color = 'white';
+          text.style.position = 'absolute';
+          text.style.left = rocketship.offsetLeft + 'px';
+          text.style.top = rocketship.offsetTop + 'px';
+          document.body.appendChild(text);
+          xSpeed = 20;
+          window.setTimeout(function () {
+            xSpeed = 5;
+            document.body.removeChild(text);
+          }, 250);
+        };
+
+        var asteroid = document.createElement('img');
+        asteroid.src =
+          'https://d.newsweek.com/en/full/1721338/asteroid.webp?w=790&f=06fbf5f373040ace234e59954c62b58f';
+        document.body.appendChild(asteroid);
+
+        asteroid.style.width = rocketship.offsetWidth * 0.75 + 'px';
+        asteroid.style.height = rocketship.offsetHeight * 0.75 + 'px';
+
+        asteroid.style.borderRadius = '50%';
+
+        asteroid.style.position = 'absolute';
+        asteroid.style.left =
+          Math.random() * (window.innerWidth - asteroid.offsetWidth) + 'px';
+        asteroid.style.top =
+          Math.random() * (window.innerHeight - asteroid.offsetHeight) + 'px';
+
+        var asteroidX = 0;
+        var asteroidY = 0;
+        var asteroidXDirection = 1;
+        var asteroidYDirection = 1;
+        var asteroidXSpeed = 5;
+        var asteroidYSpeed = 5;
+        function asteroidAnimate() {
+          asteroidX += asteroidXDirection * asteroidXSpeed;
+          asteroidY += asteroidYDirection * asteroidYSpeed;
+          if (asteroidX > window.innerWidth - asteroid.offsetWidth) {
+            asteroidXDirection = -1;
+          } else if (asteroidX < 0) {
+            asteroidXDirection = 1;
+          }
+          if (asteroidY > window.innerHeight - asteroid.offsetHeight) {
+            asteroidYDirection = -1;
+          } else if (asteroidY < 0) {
+            asteroidYDirection = 1;
+          }
+          asteroid.style.left = asteroidX + 'px';
+          asteroid.style.top = asteroidY + 'px';
+          window.requestAnimationFrame(asteroidAnimate);
+        }
+        asteroidAnimate();
+
+        asteroidXSpeed = xSpeed * 1.1;
+        asteroidYSpeed = xSpeed * 1.1;
+
+        var score = 0;
+        var scoreDisplay = document.createElement('div');
+        scoreDisplay.innerHTML = 'Score: ' + score;
+        scoreDisplay.style.position = 'absolute';
+        scoreDisplay.style.right = '0px';
+        scoreDisplay.style.top = '0px';
+        document.body.appendChild(scoreDisplay);
+
+        scoreDisplay.style.color = 'white';
+
+        scoreDisplay.style.fontSize = '2em';
+
+        var scoreIncrement = setInterval(function () {
+          score++;
+          scoreDisplay.innerHTML = 'Score: ' + score;
+        }, 500);
+
+        var asteroidOverlapping = false;
+
+        var asteroidOverlapCheck = setInterval(function () {
+          if (
+            asteroid.offsetLeft <
+              rocketship.offsetLeft + rocketship.offsetWidth &&
+            asteroid.offsetLeft + asteroid.offsetWidth >
+              rocketship.offsetLeft &&
+            asteroid.offsetTop <
+              rocketship.offsetTop + rocketship.offsetHeight &&
+            asteroid.offsetTop + asteroid.offsetHeight > rocketship.offsetTop
+          ) {
+            asteroidOverlapping = true;
+          } else {
+            asteroidOverlapping = false;
+          }
+        }, 10);
+
+        var asteroidOverlappingLastTime = false;
+
+        var asteroidCollisionCheck = setInterval(function () {
+          if (asteroidOverlapping && !asteroidOverlappingLastTime) {
+            score -= 5;
+            var text = document.createElement('div');
+            text.innerHTML = 'Collision! -5';
+            text.style.color = 'red';
+            text.style.position = 'absolute';
+            text.style.left = asteroid.offsetLeft + 'px';
+            text.style.top = asteroid.offsetTop + 'px';
+            document.body.appendChild(text);
+            window.setTimeout(function () {
+              document.body.removeChild(text);
+            }, 1000);
+          }
+          asteroidOverlappingLastTime = asteroidOverlapping;
+        }, 10);
+
+        var startTime = Date.now();
+        var win = false;
+
+        var winCheck = setInterval(function () {
+          if (score >= 250 && !win) {
+            win = true;
+            clearInterval(scoreIncrement);
+            clearInterval(asteroidOverlapCheck);
+            clearInterval(asteroidCollisionCheck);
+            while (document.body.firstChild) {
+              document.body.removeChild(document.body.firstChild);
+            }
+            var text = document.createElement('div');
+            text.innerHTML =
+              'You win! It took you ' +
+              (Date.now() - startTime) / 1000 +
+              ' seconds.';
+            text.style.color = 'green';
+            text.style.position = 'absolute';
+            text.style.left = '50%';
+            text.style.marginLeft = '-50px';
+            text.style.top = '50%';
+            text.style.marginTop = '-50px';
+            document.body.appendChild(text);
+          }
+        }, 10);
+
+        var rules = document.createElement('div');
+        rules.innerHTML =
+          'Rules: Click the rocket to fire thrusters. Avoid asteroids. Get 250 points to win. ';
+        rules.style.color = 'lightgrey';
+        rules.style.position = 'absolute';
+        rules.style.left = '0px';
+        rules.style.bottom = '0px';
+        rules.style.fontSize = '30pt';
+        document.body.appendChild(rules);
+
+        rules.innerHTML = rules.innerHTML.replace('asteroids', 'the asteroid');
+
+        var gameName = document.createElement('div');
+        gameName.innerHTML = 'Running Away from the Asteroid';
+        gameName.style.color = 'white';
+        gameName.style.position = 'absolute';
+        gameName.style.left = '0px';
+        gameName.style.top = '0px';
+        gameName.style.fontSize = '45pt';
+        document.body.appendChild(gameName);
+      });
+    </script>
+  </head>
+  <body style="margin: 0">
+    <div
+      style="
+        background-color: black;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        height: 20px;
+        padding: 20px;
+        opacity: 0.85;
+        z-index: 1000;
+      "
+    >
+      <svg
+        id="Layer_1"
+        data-name="Layer 1"
+        height="40px"
+        width="40px"
+        style="top: -8px; position: relative"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 800 800"
+      >
+        <defs>
+          <style>
+            .cls-1 {
+              fill: #fff;
+            }
+          </style>
+        </defs>
+        <title>openai-symbol-flat-white</title>
+        <path
+          class="cls-1"
+          d="M617.24,354a126.36,126.36,0,0,0-10.86-103.79,127.8,127.8,0,0,0-137.65-61.32,126.36,126.36,0,0,0-95.31-42.49A127.81,127.81,0,0,0,251.5,234.89,126.4,126.4,0,0,0,167,296.19a127.82,127.82,0,0,0,15.72,149.86,126.36,126.36,0,0,0,10.86,103.79,127.81,127.81,0,0,0,137.65,61.32,126.36,126.36,0,0,0,95.31,42.49A127.81,127.81,0,0,0,548.5,565.11,126.4,126.4,0,0,0,633,503.81,127.82,127.82,0,0,0,617.24,354ZM426.58,620.49a94.79,94.79,0,0,1-60.85-22c.77-.42,2.12-1.16,3-1.7l101-58.34a16.42,16.42,0,0,0,8.3-14.37V381.69l42.69,24.65a1.52,1.52,0,0,1,.83,1.17V525.43A95.18,95.18,0,0,1,426.58,620.49ZM222.34,533.26A94.74,94.74,0,0,1,211,469.56c.75.45,2.06,1.25,3,1.79l101,58.34a16.44,16.44,0,0,0,16.59,0l123.31-71.2v49.3a1.53,1.53,0,0,1-.61,1.31L352.19,568.05A95.16,95.16,0,0,1,222.34,533.26ZM195.77,312.77a94.71,94.71,0,0,1,49.48-41.68c0,.87-.05,2.41-.05,3.48V391.25a16.41,16.41,0,0,0,8.29,14.36L376.8,476.8l-42.69,24.65a1.53,1.53,0,0,1-1.44.13l-102.11-59A95.16,95.16,0,0,1,195.77,312.77Zm350.74,81.62L423.2,323.19l42.69-24.64a1.53,1.53,0,0,1,1.44-.13l102.11,58.95a95.08,95.08,0,0,1-14.69,171.55c0-.88,0-2.42,0-3.49V408.75A16.4,16.4,0,0,0,546.51,394.39ZM589,330.44c-.75-.46-2.06-1.25-3-1.79L485,270.31a16.46,16.46,0,0,0-16.59,0l-123.31,71.2v-49.3a1.53,1.53,0,0,1,.61-1.31L447.81,232A95.07,95.07,0,0,1,589,330.44ZM321.89,418.31l-42.7-24.65a1.52,1.52,0,0,1-.83-1.17V274.57a95.07,95.07,0,0,1,155.9-73c-.77.42-2.11,1.16-3,1.7l-101,58.34a16.41,16.41,0,0,0-8.3,14.36Zm23.19-50L400,336.59l54.92,31.7v63.42L400,463.41l-54.92-31.7Z"
+        />
+      </svg>
+      <div
+        style="
+          display: inline-block;
+          color: white;
+          vertical-align: top;
+          margin-top: 4px;
+          font-family: Helvetica, sans-serif;
+        "
+      >
+        Code generated by
+        <a
+          style="color: white; text-decoration: none; font-weight: bold"
+          href="https://openai.com/blog/openai-codex/"
+          >Dipesh Trikam using OpenAI Codex</a
+        >
+      </div>
+    </div>
+  </body>
+</html>
