@@ -128,7 +128,9 @@
         scoreDisplay.style.position = 'absolute';
         scoreDisplay.style.right = '0px';
         scoreDisplay.style.top = '0px';
+        scoreDisplay.style.fontSize = '45pt'; 
         scoreDisplay.style.fontFamily = 'SF Pro Display';
+        
         document.body.appendChild(scoreDisplay);
 
         /* Make the score font colour visible */
@@ -140,6 +142,7 @@
         /* Increment the score by 1 point, every 500ms */
         var scoreIncrement = setInterval(function () {
           score++;
+          scoreDisplay.style.fontSize = '45pt'; 
           scoreDisplay.innerHTML = 'Score: ' + score;
         }, 500);
 
@@ -173,6 +176,7 @@
             var text = document.createElement('div');
             text.innerHTML = 'Collision! -5';
             text.style.color = 'red';
+            text.style.fontFamily = 'SF Pro Display';
             text.style.position = 'absolute';
             text.style.left = asteroid.offsetLeft + 'px';
             text.style.top = asteroid.offsetTop + 'px';
@@ -219,6 +223,7 @@
           'Rules: Click the rocket to fire thrusters. Avoid asteroids. Get 250 points to win. ';
         rules.style.color = 'lightgrey';
         rules.style.position = 'absolute';
+        rules.style.width = '90%';
         rules.style.left = '0px';
         rules.style.bottom = '0px';
         rules.style.fontSize = '30pt';
