@@ -2,21 +2,26 @@
   <head>
     <script>
       document.addEventListener('DOMContentLoaded', function () {
+        /* Add this image of a rocketship: https://i1.sndcdn.com/artworks-j8xjG7zc1wmTeO7b-O6l83w-t500x500.jpg */
         var rocketship = document.createElement('img');
         rocketship.src =
           'https://i1.sndcdn.com/artworks-j8xjG7zc1wmTeO7b-O6l83w-t500x500.jpg';
         document.body.appendChild(rocketship);
 
+        /* Make it be smallish. */
         rocketship.style.width = '100px';
         rocketship.style.height = '100px';
-
+        
+        /* Crop it circularly. */
         rocketship.style.borderRadius = '50%';
 
+        /* Make it be vertically centered; put on the left side of the page */
         rocketship.style.position = 'absolute';
         rocketship.style.left = '0px';
         rocketship.style.top = '50%';
         rocketship.style.marginTop = '-50px';
 
+        /* Animate the rocketship horizontally, bouncing off the left/right walls. */
         var x = 0;
         var xDirection = 1;
         var xSpeed = 10;
@@ -32,13 +37,25 @@
         }
         animate();
 
+        /* Go half speed */
         xSpeed = 5;
 
+        /* Disable scroll bars */
         document.body.style.overflow = 'hidden';
 
+        /* Now set background to the colour of space */
         document.body.style.backgroundColor = 'black';
 
+        /* When the rocket is clicked, temporarily display some text saying "Firing thrusters!" in white on the current location -- and temporarily speed up by 4x for 0.25 seconds. */
         rocketship.onclick = function () {
+          fireThrustersAndIncreaseSpeed();
+        };
+
+        rocketship.ontouchstart = function () {
+          fireThrustersAndIncreaseSpeed();
+        };
+
+        function fireThrustersAndIncreaseSpeed() {
           var text = document.createElement('div');
           text.innerHTML = 'Firing thrusters!';
           text.style.color = 'white';
@@ -51,24 +68,29 @@
             xSpeed = 5;
             document.body.removeChild(text);
           }, 250);
-        };
+        }
 
+        /* Now add an image of an asteroid: https://d.newsweek.com/en/full/1721338/asteroid.webp?w=790&f=06fbf5f373040ace234e59954c62b58f */
         var asteroid = document.createElement('img');
         asteroid.src =
           'https://d.newsweek.com/en/full/1721338/asteroid.webp?w=790&f=06fbf5f373040ace234e59954c62b58f';
         document.body.appendChild(asteroid);
 
+        /* make it to be half the side of the rocketship times 0.75 */
         asteroid.style.width = rocketship.offsetWidth * 0.75 + 'px';
         asteroid.style.height = rocketship.offsetHeight * 0.75 + 'px';
 
+        /* Circularly crop it */
         asteroid.style.borderRadius = '50%';
 
+        /* Position it absolutely randomly */
         asteroid.style.position = 'absolute';
         asteroid.style.left =
           Math.random() * (window.innerWidth - asteroid.offsetWidth) + 'px';
         asteroid.style.top =
           Math.random() * (window.innerHeight - asteroid.offsetHeight) + 'px';
 
+        /* Animate the asteroid to move both horizontally and vertically. Use our own speed variables/function name for asteroid movement. */
         var asteroidX = 0;
         var asteroidY = 0;
         var asteroidXDirection = 1;
@@ -94,9 +116,11 @@
         }
         asteroidAnimate();
 
+        /* Set the asteroid speed to be 1.1x the spaceship's speed */
         asteroidXSpeed = xSpeed * 1.1;
         asteroidYSpeed = xSpeed * 1.1;
 
+        /* Now track a score. Display the current score in the top right, with label Score. */
         var score = 0;
         var scoreDisplay = document.createElement('div');
         scoreDisplay.innerHTML = 'Score: ' + score;
@@ -105,17 +129,22 @@
         scoreDisplay.style.top = '0px';
         document.body.appendChild(scoreDisplay);
 
+        /* Make the score font colour visible */
         scoreDisplay.style.color = 'white';
 
+        /* Make the score 2 times bigger */
         scoreDisplay.style.fontSize = '2em';
 
+        /* Increment the score by 1 point, every 500ms */
         var scoreIncrement = setInterval(function () {
           score++;
           scoreDisplay.innerHTML = 'Score: ' + score;
         }, 500);
 
+        /* Add a variable for recording whether the asteroid is overlapping the ship */
         var asteroidOverlapping = false;
 
+        /* Check for overlap every 10ms */
         var asteroidOverlapCheck = setInterval(function () {
           if (
             asteroid.offsetLeft <
@@ -132,8 +161,10 @@
           }
         }, 10);
 
+        /* Add a second variable recording whether, last time we looked, the asteroid was overlapping the ship */
         var asteroidOverlappingLastTime = false;
 
+        /* Add another timer checking if the asteroid switched from not overlapping to overlapping. You lose 5 points if so, and a red message is displayed at that location saying "Collision! -5" */
         var asteroidCollisionCheck = setInterval(function () {
           if (asteroidOverlapping && !asteroidOverlappingLastTime) {
             score -= 5;
@@ -151,9 +182,11 @@
           asteroidOverlappingLastTime = asteroidOverlapping;
         }, 10);
 
+        /* Record start time and whether the player has already won. */
         var startTime = Date.now();
         var win = false;
 
+        /* Once the player reaches 250 points, they win! (1) Clear the document, (2) Tell them how long it took in seconds, in green. */
         var winCheck = setInterval(function () {
           if (score >= 250 && !win) {
             win = true;
@@ -178,6 +211,7 @@
           }
         }, 10);
 
+        /* Add a place for the rules at the bottom left side of the page. Make it 30pt and light grey font. */
         var rules = document.createElement('div');
         rules.innerHTML =
           'Rules: Click the rocket to fire thrusters. Avoid asteroids. Get 250 points to win. ';
@@ -189,8 +223,10 @@
         rules.style.padding = "10px";
         document.body.appendChild(rules);
 
+        /* Change asteroids to "the asteroid" in the rules text */
         rules.innerHTML = rules.innerHTML.replace('asteroids', 'the asteroid');
 
+        /* Create a game name involving running away, placed at the top left of the page in 45pt white. */
         var gameName = document.createElement('div');
         gameName.innerHTML = 'Run away from the Asteroid';
         gameName.style.color = 'white';
@@ -201,7 +237,9 @@
         document.body.appendChild(gameName);
       });
     </script>
+    
     <script type="text/javascript">
+      /* Amazon connect chatbot script */
       (function(w, d, x, id){
         s=d.createElement('script');
         s.src='https://d1nv5i00u1m742.cloudfront.net/amazon-connect-chat-interface-client.js';
@@ -214,58 +252,4 @@
       amazon_connect('snippetId', 'QVFJREFIZ01Jd0tCR2plMkhsVEN5MXZ4NGo4TmdXemxhYVZ5ckQxdDBiOXZnTUdTM3dIRnZKc0NTL0srVnNLcHpRN0VsZ3FTQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNK0dpeTNOdG5kUENmYURvc0FnRVFnQ3ZXcnR6bVp3Q0hCbk5GOGJpazJmMmpYUVVvWk95RVQ3WUx0czk1ZS9vNHA4cGU5OEpUcmU0cjV2VWQ6OlBvUkwvRTNadk5TNmxQSSs4Nkw5TGEvOUZNZllRWlJWRUlKR1ExblRJaTlXSkpPTnFSUVdaNW0yTnBpUk02cC9PTnpMdkJGanNwcUlLS0plZ3JBZGZWNVdhNlQvaDdhaWs2V3lIZXdTTjNPbzNxSnJ4ejJBb0RZaUQzT29jMC8ya3J1S21YMktna3VRQVBQZzVzSXBKMjdFdHc2U1ZHOD0=');
     </script>
   </head>
-  <!-- <body style="margin: 0">
-    <div
-      style="
-        background-color: black;
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        height: 20px;
-        padding: 20px;
-        opacity: 0.85;
-        text-align: right;
-      "
-    >
-      <svg
-        id="Layer_1"
-        data-name="Layer 1"
-        height="40px"
-        width="40px"
-        style="top: -8px; position: relative"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 800 800"
-      >
-        <defs>
-          <style>
-            .cls-1 {
-              fill: #fff;
-            }
-          </style>
-        </defs>
-        <title>openai-symbol-flat-white</title>
-        <path
-          class="cls-1"
-          d="M617.24,354a126.36,126.36,0,0,0-10.86-103.79,127.8,127.8,0,0,0-137.65-61.32,126.36,126.36,0,0,0-95.31-42.49A127.81,127.81,0,0,0,251.5,234.89,126.4,126.4,0,0,0,167,296.19a127.82,127.82,0,0,0,15.72,149.86,126.36,126.36,0,0,0,10.86,103.79,127.81,127.81,0,0,0,137.65,61.32,126.36,126.36,0,0,0,95.31,42.49A127.81,127.81,0,0,0,548.5,565.11,126.4,126.4,0,0,0,633,503.81,127.82,127.82,0,0,0,617.24,354ZM426.58,620.49a94.79,94.79,0,0,1-60.85-22c.77-.42,2.12-1.16,3-1.7l101-58.34a16.42,16.42,0,0,0,8.3-14.37V381.69l42.69,24.65a1.52,1.52,0,0,1,.83,1.17V525.43A95.18,95.18,0,0,1,426.58,620.49ZM222.34,533.26A94.74,94.74,0,0,1,211,469.56c.75.45,2.06,1.25,3,1.79l101,58.34a16.44,16.44,0,0,0,16.59,0l123.31-71.2v49.3a1.53,1.53,0,0,1-.61,1.31L352.19,568.05A95.16,95.16,0,0,1,222.34,533.26ZM195.77,312.77a94.71,94.71,0,0,1,49.48-41.68c0,.87-.05,2.41-.05,3.48V391.25a16.41,16.41,0,0,0,8.29,14.36L376.8,476.8l-42.69,24.65a1.53,1.53,0,0,1-1.44.13l-102.11-59A95.16,95.16,0,0,1,195.77,312.77Zm350.74,81.62L423.2,323.19l42.69-24.64a1.53,1.53,0,0,1,1.44-.13l102.11,58.95a95.08,95.08,0,0,1-14.69,171.55c0-.88,0-2.42,0-3.49V408.75A16.4,16.4,0,0,0,546.51,394.39ZM589,330.44c-.75-.46-2.06-1.25-3-1.79L485,270.31a16.46,16.46,0,0,0-16.59,0l-123.31,71.2v-49.3a1.53,1.53,0,0,1,.61-1.31L447.81,232A95.07,95.07,0,0,1,589,330.44ZM321.89,418.31l-42.7-24.65a1.52,1.52,0,0,1-.83-1.17V274.57a95.07,95.07,0,0,1,155.9-73c-.77.42-2.11,1.16-3,1.7l-101,58.34a16.41,16.41,0,0,0-8.3,14.36Zm23.19-50L400,336.59l54.92,31.7v63.42L400,463.41l-54.92-31.7Z"
-        />
-      </svg>
-      <div
-        style="
-          display: inline-block;
-          color: white;
-          vertical-align: top;
-          margin-top: 4px;
-          font-family: Helvetica, sans-serif;
-        "
-      >
-        Code generated by
-        <a
-          style="color: white; text-decoration: none; font-weight: bold"
-          href="https://openai.com/blog/openai-codex/"
-          >Dipesh Trikam using OpenAI Codex</a
-        >
-      </div>
-    </div>
-  </body> -->
 </html>
