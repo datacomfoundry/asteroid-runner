@@ -62,6 +62,7 @@
           text.style.position = 'absolute';
           text.style.left = rocketship.offsetLeft + 'px';
           text.style.top = rocketship.offsetTop + 'px';
+          text.style.fontFamily = 'SF Pro Display';
           document.body.appendChild(text);
           xSpeed = 20;
           window.setTimeout(function () {
@@ -127,6 +128,7 @@
         scoreDisplay.style.position = 'absolute';
         scoreDisplay.style.right = '0px';
         scoreDisplay.style.top = '0px';
+        scoreDisplay.style.fontFamily = 'SF Pro Display';
         document.body.appendChild(scoreDisplay);
 
         /* Make the score font colour visible */
@@ -221,6 +223,7 @@
         rules.style.bottom = '0px';
         rules.style.fontSize = '30pt';
         rules.style.padding = "10px";
+        rules.style.fontFamily = 'SF Pro Display';
         document.body.appendChild(rules);
 
         /* Change asteroids to "the asteroid" in the rules text */
@@ -228,12 +231,15 @@
 
         /* Create a game name involving running away, placed at the top left of the page in 45pt white. */
         var gameName = document.createElement('div');
-        gameName.innerHTML = 'Run away from the Asteroid';
+        var gameNameString = 'Asteroid Runner';
+        gameName.innerHTML = gameNameString;
         gameName.style.color = 'white';
         gameName.style.position = 'absolute';
         gameName.style.left = '0px';
         gameName.style.top = '0px';
         gameName.style.fontSize = '45pt';
+        gameName.style.fontFamily = 'SF Pro Display';
+        gameName.style.fontStyle = 'italic';
         document.body.appendChild(gameName);
       });
     </script>
