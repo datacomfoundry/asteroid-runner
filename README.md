@@ -15,6 +15,10 @@ You will need access to the codex private beta to complete these steps:
 2. Copy and Paste the following instructions into the codex playground
 
 ```
+Add this image of a rocketship: https://i1.sndcdn.com/artworks-j8xjG7zc1wmTeO7b-O6l83w-t500x500.jpg
+```
+
+```
 Make it be smallish.
 ```
 
