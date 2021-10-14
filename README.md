@@ -1,4 +1,4 @@
-## Asteroid Runner
+## Asteroid Runner - [Sample Site](https://yellow-tree-0fa2a3210.azurestaticapps.net/)
 
 ### Open AI Codex
 
@@ -10,7 +10,7 @@ The Datacom Foundry have used Open AI codex to create a sample game that can be 
 
 You will need access to the codex private beta to complete these steps:
 
-1. Navigate to the beta console [here](https://beta.openai.com/codex-javascript-sandbox)
+1. Navigate to the beta console [here](https://beta.openai.com/codex-javascript-sandbox). If you need access to the Datacom Foundry sandbox, reach out to an owner.
 
 2. Copy and Paste the following instructions into the codex playground
 
